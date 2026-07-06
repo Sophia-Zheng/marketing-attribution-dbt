@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: stg_events
+    description: Cleaned GA4-style events with a derived default channel grouping.
+    columns:
+      - name: event_id
+        tests: [not_null, unique]
+      - name: channel
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Paid Search', 'Paid Social', 'Email', 'Organic Search', 'Referral', 'Direct', 'Other']
+
+  - name: int_conversions
+    description: First purchase per user.
+    columns:
+      - name: user_pseudo_id
+        tests: [not_null, unique]
+      - name: revenue
+        tests: [not_null]
+
+  - name: int_conversion_paths
+    description: Touchpoints joined to conversions within the lookback window.
+    columns:
+      - name: path_position
+        tests: [not_null]
+
+  - name: attribution_by_model
+    description: Channel credit under four attribution rule sets.
+    columns:
+      - name: attribution_model
+        tests:
+          - accepted_values:
+              values: ['last_click', 'first_click', 'linear', 'position_based']
+  
+  - name: campaign_summary
+    description: Campaign-level summary of credited conversions and revenue.
+    columns:
+      - name: channel
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Paid Search', 'Paid Social', 'Email', 'Organic Search', 'Referral', 'Direct', 'Other']
+      - name: campaign
+        tests: [not_null]
+      - name: credited_conversions
+        tests: [not_null]
+      - name: credited_revenue
+        tests: [not_null]

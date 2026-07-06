@@ -1,0 +1,19 @@
+name: marketing_attribution
+version: "1.0.0"
+profile: marketing_attribution
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+analysis-paths: ["analyses"]
+
+models:
+  marketing_attribution:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+
+vars:
+  lookback_days: 30   # attribution window before conversion

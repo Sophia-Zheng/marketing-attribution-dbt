@@ -1,0 +1,8 @@
+# Local development profile (DuckDB). See BIGQUERY_SETUP.md to switch to BigQuery.
+marketing_attribution:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: attribution.duckdb
+      threads: 4
