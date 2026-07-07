@@ -1,10 +1,17 @@
+# Local development profile (DuckDB) — works out of the box, no cloud account needed.
 marketing_attribution:
   target: dev
   outputs:
     dev:
-      type: bigquery
-      method: oauth
-      project: bdao-ecda
-      dataset: attribution_dev
+      type: duckdb
+      path: attribution.duckdb
       threads: 4
-      location: US
+
+# --- To run on BigQuery instead, replace the dev output above with: ---
+#    dev:
+#      type: bigquery
+#      method: oauth            # run: gcloud auth application-default login
+#      project: YOUR_PROJECT_ID
+#      dataset: attribution_dev
+#      threads: 4
+#      location: US             # GA4 public data lives in the US multi-region
