@@ -50,3 +50,4 @@ python3 -c "import duckdb; print(duckdb.connect('attribution.duckdb').execute('s
   natural extension.
 - No identity stitching across devices; `user_pseudo_id` is trusted as-is.
 - Direct traffic is credited naively; real engines often exclude or down-weight it.
+- staging deduplicates identical events on the surrogate key, keeping one row per (user, timestamp, event) to prevent double-counted touchpoints.

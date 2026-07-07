@@ -1,6 +1,15 @@
--- Staging: clean + type raw GA4-style events, derive a channel grouping.
 with raw as (
-    select * from {{ ref('raw_events') }}
+    select
+        {{ dbt_utils.generate_surrogate_key(['user_pseudo_id', 'event_timestamp', 'event_name']) }} as event_id,
+        user_pseudo_id,
+        timestamp_micros(event_timestamp)  as event_timestamp,
+        event_name,
+        traffic_source.source              as source,
+        traffic_source.medium              as medium,
+        traffic_source.name                as campaign,
+        ecommerce.purchase_revenue         as revenue
+    from {{ source('ga4', 'events') }}
+    where _table_suffix between '20210101' and '20210131'
 ),
 
 cleaned as (
@@ -25,6 +34,7 @@ cleaned as (
             else 'Other'
         end                                          as channel
     from raw
+    qualify row_number() over (partition by event_id order by event_timestamp) = 1
 )
 
 select * from cleaned
