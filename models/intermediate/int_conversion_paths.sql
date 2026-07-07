@@ -12,7 +12,7 @@ with joined as (
     join {{ ref('int_touchpoints') }} t
       on t.user_pseudo_id = c.user_pseudo_id
      and t.touch_ts <= c.conversion_ts
-     and t.touch_ts >= c.conversion_ts - interval '{{ var("lookback_days") }}' day
+     and t.touch_ts >= timestamp_sub(c.conversion_ts, interval {{ var("lookback_days") }} day)
 )
 
 select

@@ -1,8 +1,10 @@
-# Local development profile (DuckDB). See BIGQUERY_SETUP.md to switch to BigQuery.
 marketing_attribution:
   target: dev
   outputs:
     dev:
-      type: duckdb
-      path: attribution.duckdb
+      type: bigquery
+      method: oauth
+      project: bdao-ecda
+      dataset: attribution_dev
       threads: 4
+      location: US

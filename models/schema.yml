@@ -36,6 +36,9 @@ models:
   
   - name: campaign_summary
     description: Campaign-level summary of credited conversions and revenue.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [channel, campaign]
     columns:
       - name: channel
         tests:

@@ -1,5 +1,5 @@
 -- Staging: clean + type raw GA4-style events, derive a channel grouping.
-with source as (
+with raw as (
     select * from {{ ref('raw_events') }}
 ),
 
@@ -12,7 +12,7 @@ cleaned as (
         lower(source)                               as source,
         lower(medium)                               as medium,
         lower(campaign)                             as campaign,
-        cast(nullif(cast(revenue as varchar), '') as decimal(10,2)) as revenue,
+        cast(nullif(cast(revenue as string), '') as numeric) as revenue,
 
         -- GA-style default channel grouping
         case
@@ -24,7 +24,7 @@ cleaned as (
             when source = '(direct)'                    then 'Direct'
             else 'Other'
         end                                          as channel
-    from source
+    from raw
 )
 
 select * from cleaned
